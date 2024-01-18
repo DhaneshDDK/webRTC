@@ -32,13 +32,13 @@ const Videoplayer = () => {
     },[quality])
   return (
     <div className='w-[100vw] h-[100vh] flex flex-col gap-5 items-center justify-center px-2'>
+       <div className='max-w-[1200px]'>
        <ReactPlayer
         url={url}
         ref={timeStamp}
-        
-      controls  muted width={800}
+       controls muted width='100%'
        ></ReactPlayer>
-       
+       </div>
        <div className='flex gap-4 items-center justify-center flex-wrap'>
         <h2 className='text-[20px] font-bold'>Select video quality:</h2>
        <select className=' border-2  rounded-md bg-slate-500 px-1 py-2 font-mono'
