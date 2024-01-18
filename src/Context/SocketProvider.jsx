@@ -9,7 +9,7 @@ export const useSocket = ()=>{
 }
 
 export const SocketProvider = ({children})=>{
-    const socket = useMemo(()=> io("localhost:5000"),[]);
+    const socket = useMemo(()=> io("https://webrtc-rvx1.onrender.com/"),[]);
     return <SocketContext.Provider value={socket}>
         {children}
     </SocketContext.Provider>
