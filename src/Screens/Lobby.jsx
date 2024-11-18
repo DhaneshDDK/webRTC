@@ -33,12 +33,12 @@ const LobbyScreen = () => {
         <h1 className=' text-center text-[2.5em] font-bold my-10 font-serif text-white'>Lobby Screen</h1>
         <form onSubmit={handleSubmit}>
             {/* <label htmlFor="email">Email</label> */}
-            <input type="email" name="email" id="email" required className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[30vw] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 font-semibold dark:focus:border-blue-500 font-serif' placeholder='email' value={email}  
+            <input type="email" name="email" id="email" required className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[80vw] md:w-[450px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 font-semibold dark:focus:border-blue-500 font-serif' placeholder='email' value={email}  
                 onChange={(e)=>{setEmail(e.target.value);}}
             />
              <br/> <br/>
             {/* <label htmlFor="room">Room Id</label> */}
-            <input type="text" name='room' id="room" required className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[30vw] p-2.5 dark:bg-gray-700 dark:border-gray-600 font-semibold dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='room Id' value={room}
+            <input type="text" name='room' id="room" required className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[80vw] md:w-[450px] p-2.5 dark:bg-gray-700 dark:border-gray-600 font-semibold dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' placeholder='room Id' value={room}
             onChange={(e)=>{setRoom(e.target.value);}}
               />
            <br/> <br/>
