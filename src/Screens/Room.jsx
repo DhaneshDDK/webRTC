@@ -3,6 +3,7 @@ import { useSocket } from '../Context/SocketProvider'
 import { useEffect, useState, useCallback } from 'react';
 import ReactPlayer from 'react-player';
 import peer from '../service/peer';
+import { useParams } from 'react-router-dom';
 
 const Room = () => {
     const socket = useSocket();
@@ -10,10 +11,13 @@ const Room = () => {
     const [media, setMedia] = useState(null);
     const [remoteMedia, setRemoteMedia] = useState(null);
     const [hide, setHide] = useState(false);
-
+    const {roomId} = useParams();
+    const [email, setEmail] = useState(null);
+     // console.log(roomId);
     const handleUserJoined = (data)=>{
        console.log(`Email ${data.email} has joined the room`);
        setRemoteSocketId(data.id);
+       setEmail(data.email);
     }
 
     const handleIncomingCall = useCallback(async ({from, offer})=>{ 
@@ -65,7 +69,7 @@ const Room = () => {
 
 
     useEffect(()=>{
-       peer.peer.addEventListener('track', async (ev)=>{
+        peer.peer.addEventListener('track', async (ev)=>{
         const remoteStream = ev.streams;
         console.log("GOT TRACKS!!");
         setRemoteMedia(remoteStream[0]);
@@ -80,6 +84,8 @@ const Room = () => {
     }, [handleNegoNeeded]);
 
     useEffect(()=>{
+       socket.emit('user-joined', { id: socket.id, roomId });
+
         socket.on('user-joined', handleUserJoined);
         socket.on('incoming-call',handleIncomingCall);
         socket.on('call:accepted',handleCallAccepted);
@@ -107,18 +113,27 @@ const Room = () => {
     },[socket,remoteSocketId])
 
   return (
-    <div className=' text-center text-[22px] font-bold my-10 flex items-center justify-center flex-col gap-6'>
-         <h1 >Room</h1>
-         {
-            remoteSocketId ? <div>
-                <div>Connected</div> <br />
-              <button 
-              onClick={handleCall}
-              className={`border-2 px-4 py-2 inline-block ${hide? "hidden":"visible"} rounded-md bg-slate-700 text-white`}>Call</button>
-            </div> :  <div>No one in the room</div>
-         }
+    <div className=' text-center text-[22px] font-bold flex items-center justify-center flex-col gap-6 py-10'>
+         <h1 className=' text-center text-[2em] font-bold py5 font-serif text-white' >Room - {roomId}</h1>
 
-         {media && <button 
+              {
+                (remoteSocketId) &&  <div className=' text-[1.5em] font-mono text-green-500 '>You are connected to {email}</div> 
+              }
+         
+              {
+                 (remoteSocketId && (!remoteMedia))? <div>
+                <br />
+               <button 
+                onClick={handleCall}
+               className={`border-2 px-4 py-2 inline-block ${hide? "hidden":"visible"} rounded-md bg-slate-700 text-white font-mono
+               `}>Call</button>
+             </div> :  <div>
+              { !remoteMedia && <div className=' text-red-500 font-serif text-2xl'>OOPs!!  No one in the room</div>}
+              </div>
+              }
+              
+
+         {remoteMedia && <button 
           className={` border-2 px-4 py-2 ${hide? "hidden":"visible"} inline-block rounded-md bg-slate-700 text-white`}
          onClick={()=>{
           sendStreams(); 
@@ -129,16 +144,16 @@ const Room = () => {
 
          {
             media && 
-            <div className='flex flex-col gap-3'>
+            <div className='flex flex-col gap-3 '>
             <h1>My Stream</h1>
-            <ReactPlayer playing muted controls url={media} height="300px" width="500px"  />
+            <ReactPlayer playing muted url={media} height="300px" width="500px"  />
             </div>
          }
          {
             remoteMedia && 
             <div className='flex flex-col gap-3'>
             <h1>Remote Stream</h1>
-            <ReactPlayer playing muted controls url={remoteMedia} height="300px" width="500px"  />
+            <ReactPlayer playing muted url={remoteMedia} height="300px" width="500px"  />
             </div>
          }
          </div>
